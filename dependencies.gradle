@@ -9,8 +9,9 @@ ext {
     room = "android.arch.persistence.room:runtime:1.1.1"
     roomCompiler = "android.arch.persistence.room:compiler:1.1.1"
     dagger = "com.google.dagger:dagger:2.13"
+    daggerSupport = "com.google.dagger:dagger-android-support:2.13"
     daggerCompiler = "com.google.dagger:dagger-compiler:2.13"
-    daggerProcessor = "com.google.dagger:dagger-android-processor:2.15"
+    daggerProcessor = "com.google.dagger:dagger-android-processor:2.13"
     picasso = "com.squareup.picasso:picasso:2.5.2"
 
     // RX, Retrofit

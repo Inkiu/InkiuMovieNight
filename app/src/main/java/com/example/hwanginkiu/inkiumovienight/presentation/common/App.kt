@@ -1,43 +1,41 @@
 package com.example.hwanginkiu.inkiumovienight.presentation.common
 
+import android.app.Activity
 import android.app.Application
+import android.support.v4.app.Fragment
 import com.example.hwanginkiu.inkiumovienight.R
-import com.example.hwanginkiu.inkiumovienight.presentation.di.DaggerMainComponent
-import com.example.hwanginkiu.inkiumovienight.presentation.di.MainComponent
-import com.example.hwanginkiu.inkiumovienight.presentation.di.details.MovieDetailModule
-import com.example.hwanginkiu.inkiumovienight.presentation.di.details.MovieDetailSubComponent
+import com.example.hwanginkiu.inkiumovienight.presentation.di.DaggerAppComponent
 import com.example.hwanginkiu.inkiumovienight.presentation.di.modules.AppModule
 import com.example.hwanginkiu.inkiumovienight.presentation.di.modules.DataModule
 import com.example.hwanginkiu.inkiumovienight.presentation.di.modules.NetworkModule
-import com.example.hwanginkiu.inkiumovienight.presentation.di.popular.PopularMoviesModule
-import com.example.hwanginkiu.inkiumovienight.presentation.di.popular.PopularSubComponent
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
-class App: Application() {
+class App: Application(), HasActivityInjector, HasSupportFragmentInjector {
 
-    lateinit var mainComponent: MainComponent
-    private var popularMoviesComponent: PopularSubComponent? = null
-    private var detailMovieComponent: MovieDetailSubComponent? = null
+    @Inject lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+    @Inject lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     override fun onCreate() {
         super.onCreate()
-        mainComponent = DaggerMainComponent.builder()
+
+        DaggerAppComponent.builder()
+                .application(this)
                 .appModule(AppModule(applicationContext))
                 .networkModule(NetworkModule(getString(R.string.api_base_url), getString(R.string.api_key)))
                 .dataModule(DataModule())
                 .build()
+                .inject(this)
     }
 
-    fun createPopularComponent(): PopularSubComponent {
-        popularMoviesComponent = mainComponent.plus(PopularMoviesModule())
-        return popularMoviesComponent!!
+    override fun activityInjector(): AndroidInjector<Activity> {
+        return activityDispatchingAndroidInjector
     }
 
-    fun releasePopularComponent() {
-        popularMoviesComponent = null
-    }
-
-    fun createDetailComponent(): MovieDetailSubComponent {
-        detailMovieComponent = mainComponent.plus(MovieDetailModule())
-        return detailMovieComponent!!
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentDispatchingAndroidInjector
     }
 }

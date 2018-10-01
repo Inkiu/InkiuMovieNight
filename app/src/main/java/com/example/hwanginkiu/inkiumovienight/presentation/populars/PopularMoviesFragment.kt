@@ -14,6 +14,7 @@ import com.example.hwanginkiu.inkiumovienight.R
 import com.example.hwanginkiu.inkiumovienight.presentation.common.App
 import com.example.hwanginkiu.inkiumovienight.presentation.common.BaseFragment
 import com.example.hwanginkiu.inkiumovienight.presentation.common.ImageLoader
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_popular_movies.*
 import javax.inject.Inject
 
@@ -28,7 +29,9 @@ class PopularMoviesFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity?.application as App).createPopularComponent().inject(this)
+//        (activity?.application as App).createPopularComponent().inject(this)
+        AndroidSupportInjection.inject(this)
+
         viewModel = ViewModelProviders.of(this, factory).get(PopularMoviesViewModel::class.java)
 
         if (savedInstanceState == null) {
@@ -61,11 +64,6 @@ class PopularMoviesFragment : BaseFragment() {
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         recyclerView.adapter = popularMoviesAdapter
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        (activity?.application as App).releasePopularComponent()
     }
 
     private fun handleViewState(viewState: PopularMoviesViewState) {
