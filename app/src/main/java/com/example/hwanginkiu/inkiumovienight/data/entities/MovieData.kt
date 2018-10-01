@@ -40,7 +40,7 @@ data class MovieData(
         val originalTitle: String,
 
         @SerializedName("backdrop_path")
-        val backdropPath: String = "",
+        val backdropPath: String?,
 
         @SerializedName("release_date")
         val releaseDate: String,

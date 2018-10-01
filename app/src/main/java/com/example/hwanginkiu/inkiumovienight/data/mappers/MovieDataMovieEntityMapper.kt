@@ -23,7 +23,7 @@ class MovieDataMovieEntityMapper @Inject constructor() : Mapper<MovieData, Movie
                 title = from.title,
                 posterPath = from.posterPath,
                 originalLanguage = from.originalLanguage,
-                backdropPath = from.backdropPath,
+                backdropPath = from?.backdropPath ?: "",
                 originalTitle = from.originalTitle,
                 releaseDate = from.releaseDate,
                 overview = from.overview

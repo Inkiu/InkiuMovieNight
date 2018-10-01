@@ -1,5 +1,6 @@
 package com.example.hwanginkiu.inkiumovienight.data.repositries
 
+import android.util.Log
 import com.example.hwanginkiu.inkiumovienight.data.api.Api
 import com.example.hwanginkiu.inkiumovienight.data.mappers.DetailsDataMovieEntityMapper
 import com.example.hwanginkiu.inkiumovienight.domain.MoviesDataStore
