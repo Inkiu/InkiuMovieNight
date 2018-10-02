@@ -20,12 +20,10 @@ import android.widget.TextView
 import android.widget.Toast
 import co.lujun.androidtagview.TagContainerLayout
 import com.example.hwanginkiu.inkiumovienight.R
-import com.example.hwanginkiu.inkiumovienight.presentation.common.App
 import com.example.hwanginkiu.inkiumovienight.presentation.common.ImageLoader
 import com.example.hwanginkiu.inkiumovienight.presentation.common.SimpleTransitionEndedCallback
 import com.example.hwanginkiu.inkiumovienight.presentation.entities.Video
 import com.example.hwanginkiu.inkiumovienight.presentation.koin.SubModules
-import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 import kotlinx.android.synthetic.main.details_overview_section.*
 import kotlinx.android.synthetic.main.details_video_section.*
@@ -35,8 +33,8 @@ import org.koin.android.scope.ext.android.getOrCreateScope
 
 class MovieDetailActivity : AppCompatActivity() {
 
-    val factory: MovieDetailVMFactory by inject()
-    val imageLoader: ImageLoader by inject()
+    private val factory: MovieDetailVMFactory by inject()
+    private val imageLoader: ImageLoader by inject()
 
     private lateinit var detailViewModel: MovieDetailViewModel
     private lateinit var backdropImage: ImageView

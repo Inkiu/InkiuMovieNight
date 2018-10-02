@@ -8,11 +8,13 @@ ext {
     androidSupportLibVersion = "27.1.1"
     room = "android.arch.persistence.room:runtime:1.1.1"
     roomCompiler = "android.arch.persistence.room:compiler:1.1.1"
-    dagger = "com.google.dagger:dagger:2.13"
-    daggerSupport = "com.google.dagger:dagger-android-support:2.13"
-    daggerCompiler = "com.google.dagger:dagger-compiler:2.13"
-    daggerProcessor = "com.google.dagger:dagger-android-processor:2.13"
     picasso = "com.squareup.picasso:picasso:2.5.2"
+
+    // DI
+    koinVersion = "1.0.1"
+    koin = "org.koin:koin-android:$koinVersion"
+    koinScope = "org.koin:koin-android-scope:$koinVersion"
+    koinVieModel = "org.koin:koin-android-viewmodel:$koinVersion"
 
     // RX, Retrofit
     rxJava = "io.reactivex.rxjava2:rxjava:2.1.6"

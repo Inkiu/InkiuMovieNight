@@ -3,14 +3,11 @@ package com.example.hwanginkiu.inkiumovienight.data.mappers
 import com.example.hwanginkiu.inkiumovienight.data.entities.DetailsData
 import com.example.hwanginkiu.inkiumovienight.domain.common.Mapper
 import com.example.hwanginkiu.inkiumovienight.domain.entities.*
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by Yossi Segev on 07/01/2018.
  */
-@Singleton
-class DetailsDataMovieEntityMapper @Inject constructor() : Mapper<DetailsData, MovieEntity>() {
+class DetailsDataMovieEntityMapper : Mapper<DetailsData, MovieEntity>() {
 
     override fun mapFrom(from: DetailsData): MovieEntity {
         return MovieEntity(

@@ -6,15 +6,12 @@ import com.example.hwanginkiu.inkiumovienight.presentation.entities.Movie
 import com.example.hwanginkiu.inkiumovienight.presentation.entities.MovieDetails
 import com.example.hwanginkiu.inkiumovienight.presentation.entities.Review
 import com.example.hwanginkiu.inkiumovienight.presentation.entities.Video
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by Yossi Segev on 11/11/2017.
  */
 
-@Singleton
-class MovieEntityMovieMapper @Inject constructor() : Mapper<MovieEntity, Movie>() {
+class MovieEntityMovieMapper : Mapper<MovieEntity, Movie>() {
 
     companion object {
         const val posterBaseUrl = "https://image.tmdb.org/t/p/w342"

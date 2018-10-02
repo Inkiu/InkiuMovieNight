@@ -11,18 +11,15 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.hwanginkiu.inkiumovienight.R
-import com.example.hwanginkiu.inkiumovienight.presentation.common.App
 import com.example.hwanginkiu.inkiumovienight.presentation.common.BaseFragment
 import com.example.hwanginkiu.inkiumovienight.presentation.common.ImageLoader
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_popular_movies.*
 import org.koin.android.ext.android.inject
-import javax.inject.Inject
 
 class PopularMoviesFragment : BaseFragment() {
 
-    val factory: PopularMoviesVMFactory by inject()
-    val imageLoader: ImageLoader by inject()
+    private val factory: PopularMoviesVMFactory by inject()
+    private val imageLoader: ImageLoader by inject()
 
     private lateinit var viewModel: PopularMoviesViewModel
     private lateinit var recyclerView: RecyclerView

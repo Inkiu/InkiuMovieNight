@@ -40,7 +40,6 @@ dependencies {
     implementation rootProject.ext.rxJava
 
     /* Data */
-    implementation rootProject.ext.dagger
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitGsonConverter
     implementation rootProject.ext.retrofitRxJava2Adapter
@@ -49,9 +48,10 @@ dependencies {
     kapt rootProject.ext.roomCompiler
 
     /* Presentation */
-    kapt rootProject.ext.daggerCompiler
-    kapt rootProject.ext.daggerProcessor
-    implementation rootProject.ext.daggerSupport
+    implementation rootProject.koin
+    implementation rootProject.koinScope
+    implementation rootProject.koinVieModel
+
     implementation rootProject.ext.rxAndroid
     implementation rootProject.ext.rxKotlin
     implementation rootProject.ext.picasso
@@ -68,9 +68,4 @@ dependencies {
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
-    implementation "org.koin:koin-android:1.0.1"
-    implementation "org.koin:koin-android-scope:1.0.1"
-    implementation "org.koin:koin-android-viewmodel:1.0.1"
-
 }
