@@ -2,6 +2,7 @@ package com.example.hwanginkiu.inkiumovienight.presentation.details
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.util.Log
 import com.example.hwanginkiu.inkiumovienight.domain.common.Mapper
 import com.example.hwanginkiu.inkiumovienight.domain.entities.MovieEntity
 import com.example.hwanginkiu.inkiumovienight.domain.usecases.CheckFavorite

@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.transition.Slide
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,16 +24,19 @@ import com.example.hwanginkiu.inkiumovienight.presentation.common.App
 import com.example.hwanginkiu.inkiumovienight.presentation.common.ImageLoader
 import com.example.hwanginkiu.inkiumovienight.presentation.common.SimpleTransitionEndedCallback
 import com.example.hwanginkiu.inkiumovienight.presentation.entities.Video
+import com.example.hwanginkiu.inkiumovienight.presentation.koin.SubModules
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 import kotlinx.android.synthetic.main.details_overview_section.*
 import kotlinx.android.synthetic.main.details_video_section.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.scope.ext.android.bindScope
+import org.koin.android.scope.ext.android.getOrCreateScope
 
 class MovieDetailActivity : AppCompatActivity() {
 
-    @Inject lateinit var factory: MovieDetailVMFactory
-    @Inject lateinit var imageLoader: ImageLoader
+    val factory: MovieDetailVMFactory by inject()
+    val imageLoader: ImageLoader by inject()
 
     private lateinit var detailViewModel: MovieDetailViewModel
     private lateinit var backdropImage: ImageView
@@ -61,12 +65,11 @@ class MovieDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        bindScope(getOrCreateScope(SubModules.DETAIL))
+
         setContentView(R.layout.activity_movie_detail)
         postponeEnterTransition()
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE and View.SYSTEM_UI_FLAG_FULLSCREEN
-
-//        (application as App).createDetailComponent().inject(this)
-        AndroidInjection.inject(this)
 
         factory.movieId = intent.getIntExtra(MOVIE_ID, 0)
         detailViewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel::class.java)
@@ -159,5 +162,10 @@ class MovieDetailActivity : AppCompatActivity() {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
             startActivity(browserIntent)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("tmpLog", "onDestroy :")
     }
 }

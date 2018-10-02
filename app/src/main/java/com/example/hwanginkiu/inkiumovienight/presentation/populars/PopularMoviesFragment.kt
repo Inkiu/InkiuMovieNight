@@ -16,12 +16,14 @@ import com.example.hwanginkiu.inkiumovienight.presentation.common.BaseFragment
 import com.example.hwanginkiu.inkiumovienight.presentation.common.ImageLoader
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_popular_movies.*
+import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 class PopularMoviesFragment : BaseFragment() {
 
-    @Inject lateinit var factory: PopularMoviesVMFactory
-    @Inject lateinit var imageLoader: ImageLoader
+    val factory: PopularMoviesVMFactory by inject()
+    val imageLoader: ImageLoader by inject()
+
     private lateinit var viewModel: PopularMoviesViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -29,9 +31,6 @@ class PopularMoviesFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        (activity?.application as App).createPopularComponent().inject(this)
-        AndroidSupportInjection.inject(this)
-
         viewModel = ViewModelProviders.of(this, factory).get(PopularMoviesViewModel::class.java)
 
         if (savedInstanceState == null) {
