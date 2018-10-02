@@ -1,15 +1,17 @@
 package com.example.hwanginkiu.inkiumovienight.data.db
 
+import com.example.hwanginkiu.inkiumovienight.data.entities.MovieData
 import com.example.hwanginkiu.inkiumovienight.data.mappers.MovieDataMovieEntityMapper
 import com.example.hwanginkiu.inkiumovienight.data.mappers.MovieEntityMovieDataMapper
 import com.example.hwanginkiu.inkiumovienight.domain.MoviesCache
+import com.example.hwanginkiu.inkiumovienight.domain.common.Mapper
 import com.example.hwanginkiu.inkiumovienight.domain.entities.MovieEntity
 import com.example.hwanginkiu.inkiumovienight.domain.entities.Optional
 import io.reactivex.Observable
 
 class FavoriteMovieDBCache(database: MoviesDatabase,
-                           private val entityToDataMapper: MovieEntityMovieDataMapper,
-                           private val dataToEntityMapper: MovieDataMovieEntityMapper
+                           private val entityToDataMapper: Mapper<MovieEntity, MovieData>,
+                           private val dataToEntityMapper: Mapper<MovieData, MovieEntity>
 ) : MoviesCache {
 
     private val dao: MoviesDao = database.getMoviesDao()

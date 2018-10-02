@@ -5,21 +5,28 @@ import android.content.Context
 import com.example.hwanginkiu.inkiumovienight.data.api.Api
 import com.example.hwanginkiu.inkiumovienight.data.db.FavoriteMovieDBCache
 import com.example.hwanginkiu.inkiumovienight.data.db.MoviesDatabase
+import com.example.hwanginkiu.inkiumovienight.data.entities.MovieData
 import com.example.hwanginkiu.inkiumovienight.data.mappers.MovieDataMovieEntityMapper
 import com.example.hwanginkiu.inkiumovienight.data.mappers.MovieEntityMovieDataMapper
 import com.example.hwanginkiu.inkiumovienight.data.repositries.MoviesRepositoryImpl
 import com.example.hwanginkiu.inkiumovienight.data.repositries.RemoteMoviesDataStore
 import com.example.hwanginkiu.inkiumovienight.domain.MoviesCache
 import com.example.hwanginkiu.inkiumovienight.domain.MoviesRepository
+import com.example.hwanginkiu.inkiumovienight.domain.common.Mapper
+import com.example.hwanginkiu.inkiumovienight.domain.entities.MovieEntity
+import com.example.hwanginkiu.inkiumovienight.presentation.MovieEntityMovieMapper
 import com.example.hwanginkiu.inkiumovienight.presentation.common.ImageLoader
 import com.example.hwanginkiu.inkiumovienight.presentation.common.PicassoImageLoader
+import com.example.hwanginkiu.inkiumovienight.presentation.entities.Movie
 import com.example.hwanginkiu.inkiumovienight.presentation.koin.KoinProperties.MOVIE_API_KEY
 import com.example.hwanginkiu.inkiumovienight.presentation.koin.KoinProperties.MOVIE_BASE_URL
+import com.example.hwanginkiu.inkiumovienight.presentation.koin.MapperSign.DATA_ENTITY
+import com.example.hwanginkiu.inkiumovienight.presentation.koin.MapperSign.ENTITY_DATA
+import com.example.hwanginkiu.inkiumovienight.presentation.koin.MapperSign.ENTITY_MOVIE
 import com.squareup.picasso.Picasso
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.dsl.module.applicationContext
 import org.koin.dsl.module.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -37,7 +44,12 @@ val appModule = module {
 
     single { createMovieDatabase(get()) }
     single { createMovieRepository(get())}
-    single { createFavoriteMovieCache(get(), MovieEntityMovieDataMapper(), MovieDataMovieEntityMapper()) }
+    single { createFavoriteMovieCache(get(), get(ENTITY_DATA), get(DATA_ENTITY)) }
+
+    // mappers
+    single(ENTITY_DATA) { MovieEntityMovieDataMapper() as Mapper<MovieEntity, MovieData> }
+    single(DATA_ENTITY) { MovieDataMovieEntityMapper() as Mapper<MovieData, MovieEntity> }
+    single(ENTITY_MOVIE) { MovieEntityMovieMapper() as Mapper<MovieEntity, Movie> }
 }
 
 private fun createApi(retrofit: Retrofit): Api {
@@ -94,8 +106,8 @@ private fun createMovieRepository(api: Api): MoviesRepository {
 }
 
 private fun createFavoriteMovieCache(moviesDatabase: MoviesDatabase,
-                                     entityMovieDataMapper: MovieEntityMovieDataMapper,
-                                     movieDataMovieEntityMapper: MovieDataMovieEntityMapper): MoviesCache {
+                                     entityMovieDataMapper: Mapper<MovieEntity, MovieData>,
+                                     movieDataMovieEntityMapper: Mapper<MovieData, MovieEntity>): MoviesCache {
     return FavoriteMovieDBCache(moviesDatabase, entityMovieDataMapper, movieDataMovieEntityMapper)
 }
 
