@@ -33,30 +33,32 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 val appModule = module {
-
     single { PicassoImageLoader(Picasso.with(get())) as ImageLoader }
+}
 
-    single {
-        createApi(
-                createRetrofit(getProperty(MOVIE_BASE_URL), createInterceptors(getProperty(MOVIE_API_KEY)))
-        )
-    }
-
-    single { createMovieDatabase(get()) }
-    single { createMovieRepository(get())}
-    single { createFavoriteMovieCache(get(), get(ENTITY_DATA), get(DATA_ENTITY)) }
-
-    // mappers
+val mapperModule = module {
     single(ENTITY_DATA) { MovieEntityMovieDataMapper() as Mapper<MovieEntity, MovieData> }
     single(DATA_ENTITY) { MovieDataMovieEntityMapper() as Mapper<MovieData, MovieEntity> }
     single(ENTITY_MOVIE) { MovieEntityMovieMapper() as Mapper<MovieEntity, Movie> }
 }
 
-private fun createApi(retrofit: Retrofit): Api {
-    return retrofit.create(Api::class.java)
+val localRepoModule = module {
+    single { createMovieDatabase(get()) }
+    single { createMovieRepository(get())}
+    single { createFavoriteMovieCache(get(), get(ENTITY_DATA), get(DATA_ENTITY)) }
 }
 
-private fun createRetrofit(baseUrl: String, interceptor: ArrayList<Interceptor>): Retrofit {
+val remoteRepoModule = module {
+    single { createApi(getProperty(MOVIE_BASE_URL), getProperty(MOVIE_API_KEY)) }
+}
+
+private fun createApi(baseUrl: String, apiKey: String): Api {
+    return createRetrofit(baseUrl, apiKey).create(Api::class.java)
+}
+
+private fun createRetrofit(baseUrl: String, apiKey: String): Retrofit {
+    val interceptor = createInterceptors(apiKey)
+
     val clientBuilder = OkHttpClient.Builder()
     if (!interceptor.isEmpty()) {
         interceptor.forEach { clientBuilder.addInterceptor(it) }
@@ -111,3 +113,4 @@ private fun createFavoriteMovieCache(moviesDatabase: MoviesDatabase,
     return FavoriteMovieDBCache(moviesDatabase, entityMovieDataMapper, movieDataMovieEntityMapper)
 }
 
+val globalAppModules = listOf(appModule, mapperModule, localRepoModule, remoteRepoModule)
